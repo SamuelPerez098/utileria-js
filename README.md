@@ -15,7 +15,7 @@ Incluye el archivo `utileria.js` dentro de tu proyecto HTML vinculándolo antes 
 Librería liviana de utilidades en JavaScript diseñada para simplificar y estandarizar la validación de formularios y cálculos comunes en aplicaciones web. 
 
 ### ¿Qué problema resuelve?
-Evita la duplicación de código al validar datos ingresados por usuarios (correos, contraseñas fuertes, formatos de texto, rangos) y simplifica operaciones recurrentes con fechas (cálculo de edad exacta y verificación de mayoría de edad), proporcionando funciones listas para usar, confiables y con soporte para caracteres en español.
+Evita la duplicación de código al validar datos ingresados por usuarios (correos, contraseñas fuertes, formatos de texto, rangos) y simplifica operaciones recurrentes con fechas (cálculo de edad exacta y verificación de mayoría de edad), proporcionando funciones listas para usar, confiables y con soporte para caracteres en español (por que tiene la ñ)
 
 ---
 
