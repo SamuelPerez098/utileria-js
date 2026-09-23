@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Iniciar Sesión</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+
+<body>
+
+
+    <div class="login-container">
+
+
+        <!-- DORO COMO DECORACIÓN -->
+
+        <div class="login-header">
+
+            <img
+                src="img/doro.png"
+                alt="Doro"
+                class="doro-decoration"
+            >
+
+            <h1>Iniciar Sesión</h1>
+
+            <p>
+                Ingresa tus datos para continuar
+            </p>
+
+        </div>
+
+
+        <!-- FORMULARIO -->
+
+        <form id="loginForm">
+
+
+            <!-- USUARIO -->
+
+            <div class="input-group">
+
+                <label for="usuario">
+                    Usuario
+                </label>
+
+                <input
+                    type="text"
+                    id="usuario"
+                    placeholder="Nombre de usuario"
+                >
+
+                <small id="errorUsuario"></small>
+
+            </div>
+
+
+            <!-- CORREO -->
+
+            <div class="input-group">
+
+                <label for="correo">
+                    Correo electrónico
+                </label>
+
+                <input
+                    type="email"
+                    id="correo"
+                    placeholder="correo@ejemplo.com"
+                >
+
+                <small id="errorCorreo"></small>
+
+            </div>
+
+
+            <!-- CONTRASEÑA -->
+
+            <div class="input-group">
+
+                <label for="password">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Contraseña"
+                >
+
+                <small id="errorPassword"></small>
+
+            </div>
+
+
+            <!-- FECHA DE NACIMIENTO -->
+
+            <div class="input-group">
+
+                <label for="fechaNacimiento">
+                    Fecha de nacimiento
+                </label>
+
+                <input
+                    type="date"
+                    id="fechaNacimiento"
+                >
+
+                <small id="errorFecha"></small>
+
+            </div>
+
+
+            <!-- BOTÓN -->
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                INICIAR SESIÓN
+            </button>
+
+
+            <p id="mensajeLogin"></p>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         MODAL DE EDAD
+         ========================= -->
+
+    <div id="edadModal" class="modal">
+
+
+        <div class="modal-content">
+
+
+            <span class="close">
+                &times;
+            </span>
+
+
+            <img
+                src="img/doro.png"
+                alt="Doro"
+                class="doro-modal"
+            >
+
+
+            <h2>
+                Datos correctos
+            </h2>
+
+
+            <p id="resultadoEdad"></p>
+
+
+            <button id="cerrarModal">
+                CONTINUAR
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- LIBRERÍA -->
+
+    <script src="js/utileria.js"></script>
+
+
+    <!-- FUNCIONES DEL LOGIN -->
+
+    <script>
+
+        const formulario =
+            document.getElementById("loginForm");
+
+
+        const modal =
+            document.getElementById("edadModal");
+
+
+        const cerrarModal =
+            document.querySelector(".close");
+
+
+        const botonCerrar =
+            document.getElementById("cerrarModal");
+
+
+        formulario.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const usuario =
+                document.getElementById("usuario").value;
+
+
+            const correo =
+                document.getElementById("correo").value;
+
+
+            const password =
+                document.getElementById("password").value;
+
+
+            const fechaNacimiento =
+                document.getElementById("fechaNacimiento").value;
+
+
+            // Limpiar mensajes anteriores
+
+            document.getElementById("errorUsuario").textContent = "";
+
+            document.getElementById("errorCorreo").textContent = "";
+
+            document.getElementById("errorPassword").textContent = "";
+
+            document.getElementById("errorFecha").textContent = "";
+
+            document.getElementById("mensajeLogin").textContent = "";
+
+
+            let formularioValido = true;
+
+
+            // VALIDAR USUARIO
+
+            if (!validarUsuario(usuario)) {
+
+                document.getElementById("errorUsuario").textContent =
+                    "Usuario inválido. Usa de 4 a 20 caracteres, letras, números o _.";
+
+                formularioValido = false;
+
+            }
+
+
+            // VALIDAR CORREO
+
+            if (!validarCorreo(correo)) {
+
+                document.getElementById("errorCorreo").textContent =
+                    "Ingresa un correo electrónico válido.";
+
+                formularioValido = false;
+
+            }
+
+
+            // VALIDAR CONTRASEÑA
+
+            if (!validarPassword(password)) {
+
+                document.getElementById("errorPassword").textContent =
+                    "Mínimo 8 caracteres, mayúscula, minúscula, número y carácter especial.";
+
+                formularioValido = false;
+
+            }
+
+
+            // VALIDAR FECHA
+
+            if (fechaNacimiento === "") {
+
+                document.getElementById("errorFecha").textContent =
+                    "Selecciona tu fecha de nacimiento.";
+
+                formularioValido = false;
+
+            }
+
+
+            // SI TODO ES CORRECTO
+
+            if (formularioValido) {
+
+
+                const edad =
+                    calcularEdad(fechaNacimiento);
+
+
+                const mayorDeEdad =
+                    esMayorDeEdad(fechaNacimiento);
+
+
+                document.getElementById("resultadoEdad").textContent =
+
+                    "Tu edad es de " +
+                    edad +
+                    " años. " +
+
+                    (
+                        mayorDeEdad
+                            ? "Eres mayor de edad."
+                            : "Eres menor de edad."
+                    );
+
+
+                modal.style.display = "flex";
+
+            }
+
+        });
+
+
+        // CERRAR CON X
+
+        cerrarModal.addEventListener("click", function() {
+
+            modal.style.display = "none";
+
+        });
+
+
+        // CERRAR CON BOTÓN
+
+        botonCerrar.addEventListener("click", function() {
+
+            modal.style.display = "none";
+
+        });
+
+
+        // CERRAR HACIENDO CLICK FUERA
+
+        window.addEventListener("click", function(event) {
+
+            if (event.target === modal) {
+
+                modal.style.display = "none";
+
+            }
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

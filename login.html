@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Doro Login</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="doro-section">
+
+            <img src="img/doro.png" alt="Doro" class="doro-image">
+
+            <p>
+                Loggin 
+            </p>
+
+        </div>
+
+
+        <div class="login-box">
+
+            <h2>INICIAR SESIÓN</h2>
+
+            <p class="subtitle">
+                Ingresa tus datos para continuar
+            </p>
+
+
+            <form id="loginForm">
+
+                <div class="input-group">
+
+                    <label for="usuario">
+                        Usuario
+                    </label>
+
+                    <input
+                        type="text"
+                        id="usuario"
+                        placeholder="Nombre de usuario"
+                    >
+
+                    <small id="errorUsuario"></small>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="correo">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                        type="email"
+                        id="correo"
+                        placeholder="correo@ejemplo.com"
+                    >
+
+                    <small id="errorCorreo"></small>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Contraseña"
+                    >
+
+                    <small id="errorPassword"></small>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="fechaNacimiento">
+                        Fecha de nacimiento
+                    </label>
+
+                    <input
+                        type="date"
+                        id="fechaNacimiento"
+                    >
+
+                    <small id="errorFecha"></small>
+
+                </div>
+
+
+                <button type="submit" class="login-button">
+                    INICIAR SESIÓN
+                </button>
+
+
+                <p id="mensajeLogin"></p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL -->
+
+    <div id="edadModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close">&times;</span>
+
+            <img
+                src="img/doro-login.png"
+                alt="Doro"
+                class="doro-modal"
+            >
+
+            <h2>¡Bienvenido, Commander!</h2>
+
+            <p id="resultadoEdad"></p>
+
+            <button id="cerrarModal">
+                CONTINUAR
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="js/utileria.js"></script>
+
+
+    <script>
+
+        const formulario = document.getElementById("loginForm");
+
+        const modal = document.getElementById("edadModal");
+
+        const cerrarModal = document.querySelector(".close");
+
+        const botonCerrar = document.getElementById("cerrarModal");
+
+
+        formulario.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const usuario =
+                document.getElementById("usuario").value;
+
+            const correo =
+                document.getElementById("correo").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            const fechaNacimiento =
+                document.getElementById("fechaNacimiento").value;
+
+
+            document.getElementById("errorUsuario").textContent = "";
+            document.getElementById("errorCorreo").textContent = "";
+            document.getElementById("errorPassword").textContent = "";
+            document.getElementById("errorFecha").textContent = "";
+            document.getElementById("mensajeLogin").textContent = "";
+
+
+            let formularioValido = true;
+
+
+            // VALIDAR USUARIO
+
+            if (!validarUsuario(usuario)) {
+
+                document.getElementById("errorUsuario").textContent =
+                    "Usuario inválido. Usa de 4 a 20 caracteres, letras, números o _.";
+
+                formularioValido = false;
+            }
+
+
+            // VALIDAR CORREO
+
+            if (!validarCorreo(correo)) {
+
+                document.getElementById("errorCorreo").textContent =
+                    "Ingresa un correo electrónico válido.";
+
+                formularioValido = false;
+            }
+
+
+            // VALIDAR PASSWORD
+
+            if (!validarPassword(password)) {
+
+                document.getElementById("errorPassword").textContent =
+                    "Debe tener mínimo 8 caracteres, mayúscula, minúscula, número y carácter especial.";
+
+                formularioValido = false;
+            }
+
+
+            // VALIDAR FECHA
+
+            if (fechaNacimiento === "") {
+
+                document.getElementById("errorFecha").textContent =
+                    "Selecciona tu fecha de nacimiento.";
+
+                formularioValido = false;
+            }
+
+
+            // SI TODO ES CORRECTO
+
+            if (formularioValido) {
+
+                const edad =
+                    calcularEdad(fechaNacimiento);
+
+                const mayorDeEdad =
+                    esMayorDeEdad(fechaNacimiento);
+
+
+                document.getElementById("resultadoEdad").textContent =
+                    "Tu edad calculada es: " +
+                    edad +
+                    " años. " +
+                    (
+                        mayorDeEdad
+                            ? "Eres mayor de edad."
+                            : "Eres menor de edad."
+                    );
+
+
+                modal.style.display = "flex";
+
+            }
+
+        });
+
+
+        cerrarModal.addEventListener("click", function() {
+
+            modal.style.display = "none";
+
+        });
+
+
+        botonCerrar.addEventListener("click", function() {
+
+            modal.style.display = "none";
+
+        });
+
+
+        window.addEventListener("click", function(event) {
+
+            if (event.target === modal) {
+
+                modal.style.display = "none";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

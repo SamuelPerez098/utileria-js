@@ -1,0 +1,298 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #c7a1bf;
+    color: #4a0757;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+/* CONTENEDOR DEL LOGIN */
+.login-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    background-color: #ffffff;
+    padding: 35px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ENCABEZADO */
+.login-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h1 {
+    margin: 0;
+    color: #4a0757;
+    font-size: 30px;
+}
+
+.login-header p {
+    margin: 8px 0 0 0;
+    color: #555555;
+    font-size: 15px;
+}
+
+/* DORO COMO ADORNO */
+.doro-decoration {
+    position: absolute;
+    width: 90px;
+    right: -20px;
+    top: -55px;
+    object-fit: contain;
+    transform: rotate(8deg);
+    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.25));
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* REGLA GLOBAL PARA IMÁGENES */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family: Arial, sans-serif;
+
+    background-color: #c7a1bf;
+
+    color: #4a0757;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+}
+
+
+/* CONTENEDOR DEL LOGIN */
+
+.login-container {
+    position: relative;
+
+    width: 500px;
+    max-width: 100%;
+
+    background-color: white;
+
+    padding: 35px 40px;
+
+    border-radius: 8px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden; /* Evita que contenido e imágenes sobresalgan del contenedor */
+}
+
+
+/* SECCIÓN DE IMAGEN DE DORO EN EL LOGIN */
+
+.doro-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.doro-image {
+    max-width: 180px; /* Ajusta el tamaño de la imagen según prefieras */
+    width: 100%;
+    height: auto;
+    margin: 0 auto 10px auto;
+    object-fit: contain;
+}
+
+.doro-section p {
+    margin: 0;
+    color: #4a0757;
+    font-size: 14px;
+}
+    
+/* CAMPOS */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 7px;
+    color: #4a0757;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #b889ad;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #333333;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-group input:focus {
+    border-color: #9b00c9;
+    box-shadow: 0 0 0 3px rgba(155, 0, 201, 0.25);
+}
+
+.input-group input::placeholder {
+    color: #777777;
+}
+
+/* MENSAJES DE ERROR */
+.input-group small {
+    display: block;
+    margin-top: 5px;
+    min-height: 15px;
+    color: #e0003c;
+    font-size: 12px;
+}
+
+/* BOTÓN PRINCIPAL */
+.login-button {
+    width: 100%;
+    margin-top: 5px;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #b000c9;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.login-button:hover {
+    background-color: #9400aa;
+}
+
+.login-button:active {
+    transform: scale(0.99);
+}
+
+/* MENSAJE GENERAL */
+#mensajeLogin {
+    text-align: center;
+    color: #4a0757;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* =========================
+   MODAL
+   ========================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    padding: 30px;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+    margin: 5px 0 10px 0;
+    color: #4a0757;
+}
+
+.modal-content p {
+    color: #444444;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+/* DORO PEQUEÑO EN LA MODAL */
+.doro-modal {
+    width: 80px;
+    max-height: 80px;
+    object-fit: contain;
+    margin-bottom: 5px;
+}
+
+.modal-content button {
+    margin-top: 15px;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 4px;
+    background-color: #b000c9;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modal-content button:hover {
+    background-color: #9400aa;
+}
+
+/* BOTÓN CERRAR (X) */
+.close {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    font-size: 25px;
+    line-height: 1;
+    color: #777777;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: #4a0757;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    .login-container {
+        padding: 30px 20px;
+    }
+
+    .doro-decoration {
+        width: 70px;
+        right: -10px;
+        top: -40px;
+    }
+}
