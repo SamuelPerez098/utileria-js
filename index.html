@@ -2,356 +2,134 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Iniciar Sesión</title>
-
+    <title>Doro Dashboard</title>
     <link rel="stylesheet" href="css/styles.css">
-
 </head>
-
 
 <body>
 
-
     <div class="login-container">
 
-
-        <!-- DORO COMO DECORACIÓN -->
-
-        <div class="login-header">
-
-            <img
-                src="img/doro.png"
-                alt="Doro"
-                class="doro-decoration"
-            >
-
-            <h1>Iniciar Sesión</h1>
-
-            <p>
-                Ingresa tus datos para continuar
-            </p>
-
+        <div class="doro-section">
+            <img src="img/doro-login.png" alt="Doro" class="doro-image">
+            <h2>¡Bienvenido, <span id="nombreUsuario">Commander</span>!</h2>
+            <p id="correoUsuario"></p>
         </div>
 
+        <hr>
 
-        <!-- FORMULARIO -->
+        <div class="login-box">
+            <h3>Panel de Verificación de Seguridad</h3>
 
-        <form id="loginForm">
+            <!-- Verificación de Seguridad Secundaria -->
+            <form id="verificacionForm">
 
+                <div class="input-group">
+                    <label for="pin">PIN de Seguridad (Máximo 4 dígitos)</label>
+                    <input type="number" id="pin" placeholder="Ej. 1234">
+                    <small id="errorPin"></small>
+                </div>
 
-            <!-- USUARIO -->
+                <div class="input-group">
+                    <label for="nivel">Nivel de Acceso Solicitado (Rango 1 a 5)</label>
+                    <input type="number" id="nivel" placeholder="Ej. 3">
+                    <small id="errorNivel"></small>
+                </div>
 
-            <div class="input-group">
+                <button type="submit" class="login-button">VERIFICAR ACCESO</button>
 
-                <label for="usuario">
-                    Usuario
-                </label>
+            </form>
 
-                <input
-                    type="text"
-                    id="usuario"
-                    placeholder="Nombre de usuario"
-                >
-
-                <small id="errorUsuario"></small>
-
-            </div>
-
-
-            <!-- CORREO -->
-
-            <div class="input-group">
-
-                <label for="correo">
-                    Correo electrónico
-                </label>
-
-                <input
-                    type="email"
-                    id="correo"
-                    placeholder="correo@ejemplo.com"
-                >
-
-                <small id="errorCorreo"></small>
-
-            </div>
-
-
-            <!-- CONTRASEÑA -->
-
-            <div class="input-group">
-
-                <label for="password">
-                    Contraseña
-                </label>
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Contraseña"
-                >
-
-                <small id="errorPassword"></small>
-
-            </div>
-
-
-            <!-- FECHA DE NACIMIENTO -->
-
-            <div class="input-group">
-
-                <label for="fechaNacimiento">
-                    Fecha de nacimiento
-                </label>
-
-                <input
-                    type="date"
-                    id="fechaNacimiento"
-                >
-
-                <small id="errorFecha"></small>
-
-            </div>
-
-
-            <!-- BOTÓN -->
-
-            <button
-                type="submit"
-                class="login-button"
-            >
-                INICIAR SESIÓN
-            </button>
-
-
-            <p id="mensajeLogin"></p>
-
-
-        </form>
+            <button id="btnCerrarSesion" style="margin-top: 15px; background-color: #666;" class="login-button">CERRAR SESIÓN</button>
+        </div>
 
     </div>
 
-
-    <!-- =========================
-         MODAL DE EDAD
-         ========================= -->
-
+    <!-- MODAL -->
     <div id="edadModal" class="modal">
-
-
         <div class="modal-content">
-
-
-            <span class="close">
-                &times;
-            </span>
-
-
-            <img
-                src="img/doro.png"
-                alt="Doro"
-                class="doro-modal"
-            >
-
-
-            <h2>
-                Datos correctos
-            </h2>
-
-
+            <span class="close">&times;</span>
+            <img src="img/doro-login.png" alt="Doro" class="doro-modal">
+            <h2>Resultado de Validación</h2>
             <p id="resultadoEdad"></p>
-
-
-            <button id="cerrarModal">
-                CONTINUAR
-            </button>
-
-
+            <p id="resultadoVerificacion"></p>
+            <button id="cerrarModal">CONTINUAR</button>
         </div>
-
     </div>
-
-
-    <!-- LIBRERÍA -->
 
     <script src="js/utileria.js"></script>
 
-
-    <!-- FUNCIONES DEL LOGIN -->
-
     <script>
+        const modal = document.getElementById("edadModal");
+        const cerrarModal = document.querySelector(".close");
+        const botonCerrar = document.getElementById("cerrarModal");
 
-        const formulario =
-            document.getElementById("loginForm");
+        let datosGuardados = null;
 
+        // Comprobar si hay sesión iniciada desde el login
+        window.addEventListener("DOMContentLoaded", () => {
+            const dataStr = localStorage.getItem("usuarioData");
+            if (!dataStr) {
+                window.location.href = "login.html"; // Redirigir al login si no hay datos
+                return;
+            }
 
-        const modal =
-            document.getElementById("edadModal");
+            datosGuardados = JSON.parse(dataStr);
+            document.getElementById("nombreUsuario").textContent = datosGuardados.nombre;
+            document.getElementById("correoUsuario").textContent = datosGuardados.correo;
+        });
 
-
-        const cerrarModal =
-            document.querySelector(".close");
-
-
-        const botonCerrar =
-            document.getElementById("cerrarModal");
-
-
-        formulario.addEventListener("submit", function(event) {
-
+        document.getElementById("verificacionForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
+            const pin = document.getElementById("pin").value;
+            const nivel = parseInt(document.getElementById("nivel").value, 10);
 
-            const usuario =
-                document.getElementById("usuario").value;
+            document.getElementById("errorPin").textContent = "";
+            document.getElementById("errorNivel").textContent = "";
 
+            let esValido = true;
 
-            const correo =
-                document.getElementById("correo").value;
-
-
-            const password =
-                document.getElementById("password").value;
-
-
-            const fechaNacimiento =
-                document.getElementById("fechaNacimiento").value;
-
-
-            // Limpiar mensajes anteriores
-
-            document.getElementById("errorUsuario").textContent = "";
-
-            document.getElementById("errorCorreo").textContent = "";
-
-            document.getElementById("errorPassword").textContent = "";
-
-            document.getElementById("errorFecha").textContent = "";
-
-            document.getElementById("mensajeLogin").textContent = "";
-
-
-            let formularioValido = true;
-
-
-            // VALIDAR USUARIO
-
-            if (!validarUsuario(usuario)) {
-
-                document.getElementById("errorUsuario").textContent =
-                    "Usuario inválido. Usa de 4 a 20 caracteres, letras, números o _.";
-
-                formularioValido = false;
-
+            // 5. Usar validarLongitud
+            if (!validarLongitud(pin, 4) || pin === "") {
+                document.getElementById("errorPin").textContent = "El PIN no debe exceder los 4 dígitos.";
+                esValido = false;
             }
 
-
-            // VALIDAR CORREO
-
-            if (!validarCorreo(correo)) {
-
-                document.getElementById("errorCorreo").textContent =
-                    "Ingresa un correo electrónico válido.";
-
-                formularioValido = false;
-
+            // 6. Usar validarRango
+            if (isNaN(nivel) || !validarRango(nivel, 1, 5)) {
+                document.getElementById("errorNivel").textContent = "El nivel debe estar entre 1 y 5.";
+                esValido = false;
             }
 
+            if (esValido) {
+                // 7. Usar calcularEdad
+                const edad = calcularEdad(datosGuardados.fechaNacimiento);
 
-            // VALIDAR CONTRASEÑA
+                // 8. Usar esMayorDeEdad
+                const mayor = esMayorDeEdad(datosGuardados.fechaNacimiento);
 
-            if (!validarPassword(password)) {
-
-                document.getElementById("errorPassword").textContent =
-                    "Mínimo 8 caracteres, mayúscula, minúscula, número y carácter especial.";
-
-                formularioValido = false;
-
-            }
-
-
-            // VALIDAR FECHA
-
-            if (fechaNacimiento === "") {
-
-                document.getElementById("errorFecha").textContent =
-                    "Selecciona tu fecha de nacimiento.";
-
-                formularioValido = false;
-
-            }
-
-
-            // SI TODO ES CORRECTO
-
-            if (formularioValido) {
-
-
-                const edad =
-                    calcularEdad(fechaNacimiento);
-
-
-                const mayorDeEdad =
-                    esMayorDeEdad(fechaNacimiento);
-
-
-                document.getElementById("resultadoEdad").textContent =
-
-                    "Tu edad es de " +
-                    edad +
-                    " años. " +
-
-                    (
-                        mayorDeEdad
-                            ? "Eres mayor de edad."
-                            : "Eres menor de edad."
-                    );
-
+                document.getElementById("resultadoEdad").textContent = 
+                    `Edad actual: ${edad} años. Status: ${mayor ? "Mayor de Edad" : "Menor de Edad"}.`;
+                
+                document.getElementById("resultadoVerificacion").textContent = 
+                    `PIN y Nivel (${nivel}) validados correctamente.`;
 
                 modal.style.display = "flex";
-
             }
-
         });
 
-
-        // CERRAR CON X
-
-        cerrarModal.addEventListener("click", function() {
-
-            modal.style.display = "none";
-
+        document.getElementById("btnCerrarSesion").addEventListener("click", () => {
+            localStorage.removeItem("usuarioData");
+            window.location.href = "login.html";
         });
 
-
-        // CERRAR CON BOTÓN
-
-        botonCerrar.addEventListener("click", function() {
-
-            modal.style.display = "none";
-
-        });
-
-
-        // CERRAR HACIENDO CLICK FUERA
-
-        window.addEventListener("click", function(event) {
-
-            if (event.target === modal) {
-
-                modal.style.display = "none";
-
-            }
-
-        });
-
+        cerrarModal.addEventListener("click", () => modal.style.display = "none");
+        botonCerrar.addEventListener("click", () => modal.style.display = "none");
+        window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
     </script>
-
 
 </body>
 

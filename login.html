@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Doro Login</title>
-
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -15,274 +13,129 @@
     <div class="login-container">
 
         <div class="doro-section">
-
             <img src="img/doro.png" alt="Doro" class="doro-image">
-
-            <p>
-                Loggin 
-            </p>
-
+            <p>Iniciar Sesión</p>
         </div>
 
-
         <div class="login-box">
-
             <h2>INICIAR SESIÓN</h2>
-
-            <p class="subtitle">
-                Ingresa tus datos para continuar
-            </p>
-
+            <p class="subtitle">Ingresa tus datos para continuar</p>
 
             <form id="loginForm">
 
                 <div class="input-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" placeholder="Ej. Juan Perez">
+                    <small id="errorNombre"></small>
+                </div>
 
-                    <label for="usuario">
-                        Usuario
-                    </label>
-
-                    <input
-                        type="text"
-                        id="usuario"
-                        placeholder="Nombre de usuario"
-                    >
-
+                <div class="input-group">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" placeholder="Nombre de usuario">
                     <small id="errorUsuario"></small>
-
                 </div>
 
-
                 <div class="input-group">
-
-                    <label for="correo">
-                        Correo electrónico
-                    </label>
-
-                    <input
-                        type="email"
-                        id="correo"
-                        placeholder="correo@ejemplo.com"
-                    >
-
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" placeholder="correo@ejemplo.com">
                     <small id="errorCorreo"></small>
-
                 </div>
 
-
                 <div class="input-group">
-
-                    <label for="password">
-                        Contraseña
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Contraseña"
-                    >
-
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Contraseña">
                     <small id="errorPassword"></small>
-
                 </div>
-
 
                 <div class="input-group">
-
-                    <label for="fechaNacimiento">
-                        Fecha de nacimiento
-                    </label>
-
-                    <input
-                        type="date"
-                        id="fechaNacimiento"
-                    >
-
+                    <label for="fechaNacimiento">Fecha de nacimiento</label>
+                    <input type="date" id="fechaNacimiento">
                     <small id="errorFecha"></small>
-
                 </div>
 
-
-                <button type="submit" class="login-button">
-                    INICIAR SESIÓN
-                </button>
-
-
+                <button type="submit" class="login-button">INICIAR SESIÓN</button>
                 <p id="mensajeLogin"></p>
 
             </form>
-
         </div>
 
     </div>
-
-
-    <!-- MODAL -->
-
-    <div id="edadModal" class="modal">
-
-        <div class="modal-content">
-
-            <span class="close">&times;</span>
-
-            <img
-                src="img/doro-login.png"
-                alt="Doro"
-                class="doro-modal"
-            >
-
-            <h2>¡Bienvenido, Commander!</h2>
-
-            <p id="resultadoEdad"></p>
-
-            <button id="cerrarModal">
-                CONTINUAR
-            </button>
-
-        </div>
-
-    </div>
-
 
     <script src="js/utileria.js"></script>
 
-
     <script>
-
         const formulario = document.getElementById("loginForm");
 
-        const modal = document.getElementById("edadModal");
-
-        const cerrarModal = document.querySelector(".close");
-
-        const botonCerrar = document.getElementById("cerrarModal");
-
+        // Cargar datos previos si ya existen en el navegador
+        window.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("usuarioData")) {
+                const data = JSON.parse(localStorage.getItem("usuarioData"));
+                document.getElementById("nombre").value = data.nombre || "";
+                document.getElementById("usuario").value = data.usuario || "";
+                document.getElementById("correo").value = data.correo || "";
+                document.getElementById("fechaNacimiento").value = data.fechaNacimiento || "";
+            }
+        });
 
         formulario.addEventListener("submit", function(event) {
-
             event.preventDefault();
 
+            const nombre = document.getElementById("nombre").value;
+            const usuario = document.getElementById("usuario").value;
+            const correo = document.getElementById("correo").value;
+            const password = document.getElementById("password").value;
+            const fechaNacimiento = document.getElementById("fechaNacimiento").value;
 
-            const usuario =
-                document.getElementById("usuario").value;
-
-            const correo =
-                document.getElementById("correo").value;
-
-            const password =
-                document.getElementById("password").value;
-
-            const fechaNacimiento =
-                document.getElementById("fechaNacimiento").value;
-
-
+            document.getElementById("errorNombre").textContent = "";
             document.getElementById("errorUsuario").textContent = "";
             document.getElementById("errorCorreo").textContent = "";
             document.getElementById("errorPassword").textContent = "";
             document.getElementById("errorFecha").textContent = "";
-            document.getElementById("mensajeLogin").textContent = "";
-
 
             let formularioValido = true;
 
+            // 1. Usar soloLetras
+            if (!soloLetras(nombre)) {
+                document.getElementById("errorNombre").textContent = "Ingresa solo letras y espacios.";
+                formularioValido = false;
+            }
 
-            // VALIDAR USUARIO
-
+            // 2. Usar validarUsuario
             if (!validarUsuario(usuario)) {
-
-                document.getElementById("errorUsuario").textContent =
-                    "Usuario inválido. Usa de 4 a 20 caracteres, letras, números o _.";
-
+                document.getElementById("errorUsuario").textContent = "Usuario inválido (4-20 caracteres, letras, números o _).";
                 formularioValido = false;
             }
 
-
-            // VALIDAR CORREO
-
+            // 3. Usar validarCorreo
             if (!validarCorreo(correo)) {
-
-                document.getElementById("errorCorreo").textContent =
-                    "Ingresa un correo electrónico válido.";
-
+                document.getElementById("errorCorreo").textContent = "Ingresa un correo electrónico válido.";
                 formularioValido = false;
             }
 
-
-            // VALIDAR PASSWORD
-
+            // 4. Usar validarPassword
             if (!validarPassword(password)) {
-
-                document.getElementById("errorPassword").textContent =
-                    "Debe tener mínimo 8 caracteres, mayúscula, minúscula, número y carácter especial.";
-
+                document.getElementById("errorPassword").textContent = "Requiere 8+ caracteres, mayúscula, minúscula, número y especial.";
                 formularioValido = false;
             }
-
-
-            // VALIDAR FECHA
 
             if (fechaNacimiento === "") {
-
-                document.getElementById("errorFecha").textContent =
-                    "Selecciona tu fecha de nacimiento.";
-
+                document.getElementById("errorFecha").textContent = "Selecciona tu fecha de nacimiento.";
                 formularioValido = false;
             }
 
-
-            // SI TODO ES CORRECTO
-
+            // Si pasa todas las validaciones, guarda los datos y redirige a index.html
             if (formularioValido) {
+                const datosUsuario = {
+                    nombre,
+                    usuario,
+                    correo,
+                    fechaNacimiento
+                };
 
-                const edad =
-                    calcularEdad(fechaNacimiento);
-
-                const mayorDeEdad =
-                    esMayorDeEdad(fechaNacimiento);
-
-
-                document.getElementById("resultadoEdad").textContent =
-                    "Tu edad calculada es: " +
-                    edad +
-                    " años. " +
-                    (
-                        mayorDeEdad
-                            ? "Eres mayor de edad."
-                            : "Eres menor de edad."
-                    );
-
-
-                modal.style.display = "flex";
-
+                localStorage.setItem("usuarioData", JSON.stringify(datosUsuario));
+                window.location.href = "index.html"; // REDIRECCIÓN AL INDEX
             }
-
         });
-
-
-        cerrarModal.addEventListener("click", function() {
-
-            modal.style.display = "none";
-
-        });
-
-
-        botonCerrar.addEventListener("click", function() {
-
-            modal.style.display = "none";
-
-        });
-
-
-        window.addEventListener("click", function(event) {
-
-            if (event.target === modal) {
-
-                modal.style.display = "none";
-
-            }
-
-        });
-
     </script>
 
 </body>
