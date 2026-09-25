@@ -53,7 +53,10 @@ function calcularEdad(fechaNacimiento) {
     if (
         mes < 0 ||
         (mes === 0 && hoy.getDate() < nacimiento.getDate())
-    ) {
+    )
+    
+    
+    {
         edad--;
     }
 
@@ -64,10 +67,13 @@ function calcularEdad(fechaNacimiento) {
  * Determina si una persona es mayor de edad (18 años o más) según su fecha de nacimiento.
  * 
  * @param {string|Date} fechaNacimiento - Fecha de nacimiento (ej. "YYYY-MM-DD").
- * @returns {boolean} Retorna `true` si tiene 18 años o más, de lo contrario `false`.
+ * @returns {string} Retorna `validacion` si tiene 18 años o más, de lo contrario `La fecha de nacimiento no puede ser futura`.
  */
 function esMayorDeEdad(fechaNacimiento) {
     return calcularEdad(fechaNacimiento) >= 18;
+    if (calcularEdad(fechaNacimiento)  < 0) {
+        throw new Error("La fecha de nacimiento no puede ser futura");
+}
 }
 
 /**

@@ -118,8 +118,14 @@
                 formularioValido = false;
             }
 
-            if (fechaNacimiento === "") {
+              if (fechaNacimiento === "") {
                 document.getElementById("errorFecha").textContent = "Selecciona tu fecha de nacimiento.";
+                formularioValido = false;
+            } else if (calcularEdad(fechaNacimiento) < 0) {
+                document.getElementById("errorFecha").textContent = "La fecha de nacimiento no puede ser futura.";
+                formularioValido = false;
+            } else if (!esMayorDeEdad(fechaNacimiento)) {
+                document.getElementById("errorFecha").textContent = "Debes ser mayor de edad para registrarte.";
                 formularioValido = false;
             }
 

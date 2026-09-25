@@ -131,3 +131,55 @@ Valida el nombre de usuario según reglas de longitud y caracteres permitidos:
 * **Parámetros:**
   * `{string} usuario` - Nombre de usuario a evaluar.
 * **Retorna:** `{boolean}` - `true` si cumple con el formato, de lo contrario `false`.
+
+
+## Demostración y Capturas de Pantalla
+
+A continuación se muestra el funcionamiento del sistema dividido entre las dos vistas principales, utilizando la librería `utileria.js`, eventos de JavaScript y almacenamiento local.
+
+---
+
+### 1. Formulario de Inicio de Sesión (`login.html`)
+
+![Captura 1 - Formulario de Inicio de Sesión](img/Captiura1.jpeg)
+
+* **Descripción del Resultado:** 
+  La vista del Login permite el ingreso de los datos iniciales del usuario (Nombre Completo, Usuario, Correo Electrónico, Contraseña y Fecha de Nacimiento). Si los datos ingresados no cumplen con las reglas, se despliegan mensajes de error dinámicos debajo de los campos afectados (por ejemplo, al ingresar un correo sin formato o una fecha inválida).
+
+* **Funciones y Eventos Utilizados:**
+  * **Evento `submit`:** Escucha el envío del formulario, detiene la recarga de página mediante `event.preventDefault()` y activa el flujo de validación.
+  * **Librería (`utileria.js`):** Hace uso de las funciones `soloLetras()`, `validarUsuario()`, `validarCorreo()` y `validarPassword()`.
+  * **Persistencia (`localStorage`):** Una vez que todas las validaciones son exitosas, los datos del usuario se empaquetan en un objeto de JavaScript y se almacenan permanentemente en el navegador utilizando `localStorage.setItem('usuarioData', JSON.stringify(datosUsuario))`. Posteriormente, redirige al usuario hacia `index.html`.
+
+---
+
+### 2. Panel de Verificación de Seguridad con Validaciones (`index.html`)
+
+![Captura 2 - Panel de Verificación de Seguridad](img/Captiura2.jpeg)
+
+* **Descripción del Resultado:** 
+  Al ingresar a esta vista, la interfaz saluda al usuario mostrando dinámicamente su nombre y correo guardados previamente. Contiene un formulario de seguridad secundaria que evalúa un PIN y un Nivel de Acceso. Si el usuario ingresa un PIN con más de 4 dígitos o un Nivel fuera del rango, se muestran alertas en color rojo.
+
+* **Funciones y Eventos Utilizados:**
+  * **Evento `DOMContentLoaded`:** Se ejecuta automáticamente al cargar el DOM. Lee los datos almacenados en `localStorage` usando `localStorage.getItem('usuarioData')`, los convierte de vuelta a un objeto con `JSON.parse()` y actualiza dinámicamente el texto del encabezado (`¡Bienvenido, ...!`). Si no existen datos guardados, redirige por seguridad al `login.html`.
+  * **Evento `submit`:** Procesa la validación secundaria del formulario.
+  * **Librería (`utileria.js`):** Evalúa los campos mediante las funciones `validarLongitud()` para el PIN y `validarRango()` para determinar que el nivel solicitado se encuentre entre 1 y 5.
+  * **Evento `click` (Cerrar Sesión):** El botón "CERRAR SESIÓN" dispara una función que elimina los datos del navegador con `localStorage.removeItem('usuarioData')` y devuelve al usuario a la pantalla de login.
+
+---
+
+### 3. Modal de Resultado de Validación (`index.html`)
+
+![Captura 3 - Modal de Resultado de Validación](img/Captiura3.jpeg)
+
+* **Descripción del Resultado:** 
+  Cuando los datos del panel de verificación son válidos, se despliega una ventana modal con los resultados del procesamiento de la fecha de nacimiento ingresada en el primer formulario y la confirmación del acceso concedido.
+
+* **Funciones y Eventos Utilizados:**
+  * **Librería (`utileria.js`):** Se ejecutan las funciones `calcularEdad()`, la cual determina la edad exacta en años cumplidos recuperando la fecha de nacimiento almacenada en `localStorage`, y `esMayorDeEdad()`, que evalúa si la persona cuenta con 18 años o más para asignar el status correspondiente.
+  * **Manipulación del DOM:** Se inserta el texto calculado en los elementos HTML `<p id="resultadoEdad">` y `<p id="resultadoVerificacion">`.
+  * **Eventos `click` (Modal):** Se hace visible el modal modificando su propiedad de estilo CSS (`modal.style.display = 'flex'`). Adicionalmente, se configuran escuchadores de evento `click` sobre el botón "CONTINUAR", el ícono de cierre `×` y el objeto global `window` para ocultar la ventana cuando el usuario haga clic fuera de ella.
+
+
+  **Enlace del video demostrativo**
+  https://drive.google.com/file/d/1xUH_kAdJanQiLk3NSTD4H6gIEEjIk5_d/view?usp=drive_link
