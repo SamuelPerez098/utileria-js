@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/gh/SamuelPerez098/utileria-js@main/js/utileria.js"></script>
+    <script src="js/utileria.js"></script>
 
     <script>
         const modal = document.getElementById("edadModal");
@@ -72,7 +72,7 @@
         window.addEventListener("DOMContentLoaded", () => {
             const dataStr = localStorage.getItem("usuarioData");
             if (!dataStr) {
-                window.location.href = "login.html"; // Redirigir al login si no hay datos
+                window.location.href = "index.html"; // Redirigir al login si no hay datos
                 return;
             }
 
